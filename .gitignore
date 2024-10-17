@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+.venv/
+.env
+
+# pytest
+.pytest_cache/
+
+# Log files
+*.log
+
+# Configuration files
+config/*.yaml
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# OS specific files
+.DS_Store
+Thumbs.db
