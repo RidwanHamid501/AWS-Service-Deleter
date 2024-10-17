@@ -7,6 +7,9 @@ def get_resources_with_prefix(client, prefix, resource_key, identifier_key, serv
         items = []
         for reservation in resources[resource_key]:
             items.extend(reservation['Instances'])
+    elif service_type == 'security_group':
+        resources = client.describe_security_groups()
+        items = resources[resource_key]
     elif service_type == 'ecs':
         resources = client.list_clusters()
         items = resources[resource_key]
@@ -19,8 +22,11 @@ def get_resources_with_prefix(client, prefix, resource_key, identifier_key, serv
     elif service_type == 'elasticache':
         resources = client.describe_cache_clusters()
         items = resources[resource_key]
-    elif service_type == 'elb':
+    elif service_type == 'elbv2':
         resources = client.describe_load_balancers()
+        items = resources[resource_key]
+    elif service_type == 'elbv2b':
+        resources = client.describe_target_groups()
         items = resources[resource_key]
     elif service_type == 'ecr':
         resources = client.describe_repositories()
@@ -50,11 +56,23 @@ def get_resources_with_prefix(client, prefix, resource_key, identifier_key, serv
         resource_ids = [
             item for item in items if item.split('/')[-1].startswith(prefix)
         ]
+    elif service_type == 'ec2' or service_type == 'vpc' or service_type == 'security_group':
+        for item in items:
+            if 'Tags' in item:
+                for tag in item['Tags']:
+                    if tag['Key'] == 'Name' and prefix in tag['Value']:
+                        resource_ids.append(item[identifier_key])
+    elif service_type == 'amplify':
+        resource_ids = [
+            item[identifier_key]
+            for item in items
+            if item['name'].startswith(prefix)
+        ]
     else:
         resource_ids = [
             item[identifier_key]
             for item in items
-            if item[identifier_key].startswith(prefix)
+            if prefix in item[identifier_key]
         ]
 
     return resource_ids
