@@ -14,9 +14,8 @@ METHODS_REQUIRING_LIST = {"terminate_instances", "delete_cache_cluster",
 
 
 def delete_resources(params, prefix, is_execute=False):
-    """Generalized function to delete resources or plan deletion using AWS clients."""
+    """Generalised function to delete resources or plan deletion using AWS clients."""
 
-    # Fetch resources matching the prefix
     resources = get_resources_with_prefix(
         params["client"], prefix, params["resource_key"], params["identifier_key"],
         service_type=params["service_type"], method=params["method"]
@@ -29,18 +28,15 @@ def delete_resources(params, prefix, is_execute=False):
 
     if is_execute:
         try:
-            # Prepare deletion method
             delete_method = getattr(
                 params["client"], params["delete_method_name"])
             delete_params_key = params["delete_params_key"]
             requires_list = params.get(
                 "requires_list", params["delete_method_name"] in METHODS_REQUIRING_LIST)
 
-            # Execute the deletion
             for resource in resources:
                 logger.info(f"Deleting {params['resource_name']}: {resource}")
 
-                # Pass list if needed, else pass single value
                 delete_method(
                     **{delete_params_key: [resource] if requires_list else resource})
 
@@ -48,7 +44,6 @@ def delete_resources(params, prefix, is_execute=False):
         except Exception as e:
             logger.error(f"Failed to delete {params['resource_name']}s: {e}")
     else:
-        # Planning mode, log the resources that would be deleted
         logger.info(f"Planning to delete {
                     params['resource_name']}s: {resources}")
 
