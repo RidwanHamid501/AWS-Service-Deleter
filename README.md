@@ -47,7 +47,7 @@ To delete AWS resources with a given prefix, use the `delete_services.py` script
 To plan the deletion of ECS clusters and S3 buckets with a prefix `test`:
 
 ```sh
-python3 delete_services.py --prefix c14 --ec2 --s3
+python3 delete_services.py --prefix test --ec2 --s3
 ```
 
 #### Execute Mode
@@ -55,7 +55,7 @@ python3 delete_services.py --prefix c14 --ec2 --s3
 To actually delete ECS clusters and S3 buckets with a prefix `test`:
 
 ```sh
-python3 delete_services.py --prefix c14 --ecs --s3 --execute
+python3 delete_services.py --prefix test --ecs --s3 --execute
 ```
 
 ## Notes
