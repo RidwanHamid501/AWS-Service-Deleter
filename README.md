@@ -60,6 +60,6 @@ python3 delete_services.py --prefix test --ecs --s3 --execute
 
 ## Notes
 
-- The `Name`s of VPCs and Security Groups must include the given prefix (if not already) in order to be matched and deleted by this script.
+- The `Name` tag of VPCs and Security Groups must include the given prefix (if not already) in order to be matched and deleted by this script.
 - The VPCs and Security Groups may error if their dependencies are in the process of deleting. If this happens, simply wait for a while and rerun the script to ensure all dependent resources are fully deleted before attempting to delete again.
 - The `delete_compact.py` file holds a variable `FUNCTION_MAP` with function parameters enabling it to run each service in one function. For simplicity, use `delete_services.py`.
